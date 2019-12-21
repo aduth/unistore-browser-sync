@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"module": "es2015",
+		"moduleResolution": "node",
+		"target": "es2019",
+		"allowJs": true,
+		"checkJs": true,
+		"typeRoots": [
+			"node_modules/@types",
+			"node_modules/web-ext-types"
+		],
+		"noEmit": true,
+		"strictNullChecks": true
+	},
+	"files": [
+		"index.js"
+	]
+}

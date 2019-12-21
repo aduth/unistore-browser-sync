@@ -1,0 +1,48 @@
+{
+  "name": "unistore-browser-sync",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Extend a Unistore store to replicate state for your browser extension using browser.runtime.Port",
+  "main": "index.js",
+  "module": "index.js",
+  "sideEffects": false,
+  "keywords": [
+    "unistore",
+    "sync",
+    "browser",
+    "extension"
+  ],
+  "scripts": {
+    "build": "npm run build:types",
+    "build:types": "tsc -p tsconfig.decl.json",
+    "prepublishOnly": "npm run build",
+    "test": "npm run test:lint && npm run test:types",
+    "test:lint": "eslint index.js",
+    "test:types": "tsc"
+  },
+  "files": [
+    "index.d.ts",
+    "index.js"
+  ],
+  "author": {
+    "name": "Andrew Duthie",
+    "email": "andrew@andrewduthie.com",
+    "url": "https://andrewduthie.com"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/aduth/unistore-browser-sync",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aduth/unistore-browser-sync.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aduth/unistore-browser-sync/issues"
+  },
+  "devDependencies": {
+    "@wordpress/eslint-plugin": "^3.3.0",
+    "eslint": "^6.8.0",
+    "typescript": "^3.7.4",
+    "unistore": "^3.5.1",
+    "web-ext-types": "^3.2.1"
+  }
+}
