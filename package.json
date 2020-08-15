@@ -39,10 +39,11 @@
     "url": "https://github.com/aduth/unistore-browser-sync/issues"
   },
   "devDependencies": {
-    "@wordpress/eslint-plugin": "^3.3.0",
-    "eslint": "^6.8.0",
-    "typescript": "^3.7.4",
-    "unistore": "^3.5.1",
+    "@wordpress/eslint-plugin": "^7.1.0",
+    "eslint": "^7.7.0",
+    "eslint-plugin-jsdoc": "^30.2.2",
+    "typescript": "^3.9.7",
+    "unistore": "^3.5.2",
     "web-ext-types": "^3.2.1"
   }
 }
