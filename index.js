@@ -1,7 +1,7 @@
 /**
  * A message object passed between ports.
  *
- * @typedef {Object} Message
+ * @typedef {object} Message
  *
  * @property {string} type Message type.
  */
@@ -15,7 +15,7 @@
 /**
  * A dispatch message passed between ports.
  *
- * @typedef {Object} DispatchMessageChildType
+ * @typedef {object} DispatchMessageChildType
  *
  * @property {string}   action Action name.
  * @property {Array<*>} args   Action arguments.
@@ -26,9 +26,9 @@
 /**
  * A message passed from primary to replica stores on state change.
  *
- * @typedef {Object} SetStateMessageChildType
+ * @typedef {object} SetStateMessageChildType
  *
- * @property {Object}  state        New state.
+ * @property {object}  state        New state.
  * @property {boolean} isInitialize Whether initializing state change.
  *
  * @typedef {Message & SetStateMessageChildType} SetStateMessage
@@ -74,15 +74,15 @@ const PORT_NAME = 'sync';
  *
  * @return {SyncStore} Enhanced store.
  */
-function withDispatch( store, dispatcher ) {
+function withDispatch(store, dispatcher) {
 	return {
 		...store,
-		dispatch( action, ...args ) {
-			dispatcher( {
+		dispatch(action, ...args) {
+			dispatcher({
 				type: 'dispatch',
 				action,
 				args,
-			} );
+			});
 		},
 	};
 }
@@ -95,13 +95,13 @@ function withDispatch( store, dispatcher ) {
  *
  * @return {MessageHandler} Filtering message handler.
  */
-function ifMessageType( type, handler ) {
+function ifMessageType(type, handler) {
 	/**
 	 * Fitering message handler.
 	 *
 	 * @param {Message} message Message from port to compare against.
 	 */
-	return ( message ) => void ( message.type === type && handler( message ) );
+	return (message) => void (message.type === type && handler(message));
 }
 
 /**
@@ -115,21 +115,21 @@ function ifMessageType( type, handler ) {
  *
  * @return {SyncStore} Primary store.
  */
-export function primary( store, actions = {} ) {
+export function primary(store, actions = {}) {
 	/**
 	 * Handles a dispatch message, either from a replica content port, or from
 	 * the same frame where a dispatch occurs.
 	 *
 	 * @param {DispatchMessage} message
 	 */
-	function dispatch( message ) {
+	function dispatch(message) {
 		const { action, args } = message;
-		if ( actions.hasOwnProperty( action ) ) {
-			store.action( actions[ action ] )( ...args );
+		if (actions.hasOwnProperty(action)) {
+			store.action(actions[action])(...args);
 		}
 	}
 
-	const handleMessage = ifMessageType( 'dispatch', dispatch );
+	const handleMessage = ifMessageType('dispatch', dispatch);
 
 	/**
 	 * Sends setState message to a port, optionally as an initialization.
@@ -137,44 +137,44 @@ export function primary( store, actions = {} ) {
 	 * @param {browser.runtime.Port} port                 Port to message.
 	 * @param {boolean=}             [isInitialize=false] Whether initializes.
 	 */
-	function postSetState( port, isInitialize = false ) {
-		port.postMessage( {
+	function postSetState(port, isInitialize = false) {
+		port.postMessage({
 			type: 'setState',
 			state: store.getState(),
 			isInitialize,
-		} );
+		});
 	}
 
 	/** @type {browser.runtime.Port[]} */
 	const ports = [];
 
 	// Sync state to ports on change.
-	store.subscribe( () => ports.forEach( ( port ) => postSetState( port ) ) );
+	store.subscribe(() => ports.forEach((port) => postSetState(port)));
 
-	browser.runtime.onConnect.addListener( ( port ) => {
-		if ( port.name !== PORT_NAME ) {
+	browser.runtime.onConnect.addListener((port) => {
+		if (port.name !== PORT_NAME) {
 			return;
 		}
 
 		// Initialize the port.
-		postSetState( port, true );
+		postSetState(port, true);
 
 		// Track port for subscribe updates.
-		ports.push( port );
+		ports.push(port);
 
 		// Start listening for dispatches.
-		port.onMessage.addListener( handleMessage );
+		port.onMessage.addListener(handleMessage);
 
-		port.onDisconnect.addListener( () => {
+		port.onDisconnect.addListener(() => {
 			// Unbind message handler when content port disconnects.
-			port.onMessage.removeListener( handleMessage );
+			port.onMessage.removeListener(handleMessage);
 
 			// Remove port from subscribers.
-			ports.splice( ports.indexOf( port ), 1 );
-		} );
-	} );
+			ports.splice(ports.indexOf(port), 1);
+		});
+	});
 
-	return withDispatch( store, handleMessage );
+	return withDispatch(store, handleMessage);
 }
 
 /**
@@ -186,39 +186,39 @@ export function primary( store, actions = {} ) {
  *
  * @return {Promise<SyncStore>} Promise resolving to replica store.
  */
-export async function replica( store ) {
-	return new Promise( ( resolve ) => {
-		const port = browser.runtime.connect( { name: PORT_NAME } );
+export function replica(store) {
+	return new Promise((resolve) => {
+		const port = browser.runtime.connect({ name: PORT_NAME });
 
 		/** @type {Dispatcher} */
-		const dispatcher = ( message ) => port.postMessage( message );
+		const dispatcher = (message) => port.postMessage(message);
 
 		/** @type {SyncStore} */
-		const replicaStore = withDispatch( store, dispatcher );
+		const replicaStore = withDispatch(store, dispatcher);
 
 		/**
 		 * Handles a setState message from the primary store.
 		 *
 		 * @param {SetStateMessage} message
 		 */
-		function setState( message ) {
+		function setState(message) {
 			const { state, isInitialize } = message;
 
-			replicaStore.setState( state, true );
+			replicaStore.setState(state, true);
 
-			if ( isInitialize ) {
-				resolve( replicaStore );
+			if (isInitialize) {
+				resolve(replicaStore);
 			}
 		}
 
-		const handleMessage = ifMessageType( 'setState', setState );
+		const handleMessage = ifMessageType('setState', setState);
 
-		port.onMessage.addListener( handleMessage );
-	} );
+		port.onMessage.addListener(handleMessage);
+	});
 }
 
-if ( typeof window !== 'undefined' ) {
-	/** @type {any} */ ( window ).unistoreBrowserSync = {
+if (typeof window !== 'undefined') {
+	/** @type {any} */ (window).unistoreBrowserSync = {
 		primary,
 		replica,
 	};

@@ -1,15 +1,9 @@
 {
-	"extends": "plugin:@wordpress/eslint-plugin/recommended",
-	"parserOptions": {
-		"ecmaVersion": 2019,
-		"sourceType": "module"
+	"extends": "@aduth/eslint-config",
+	"env": {
+		"browser": true
 	},
 	"globals": {
 		"browser": true
-	},
-	"settings": {
-		"jsdoc": {
-			"mode": "typescript"
-		}
 	}
 }
