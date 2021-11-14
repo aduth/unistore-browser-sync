@@ -1,52 +1,52 @@
 {
-  "name": "unistore-browser-sync",
-  "type": "module",
-  "version": "1.0.0",
-  "description": "Extend a Unistore store to replicate state for your browser extension using browser.runtime.Port",
-  "main": "index.js",
-  "module": "index.js",
-  "sideEffects": false,
-  "keywords": [
-    "unistore",
-    "sync",
-    "browser",
-    "extension"
-  ],
-  "scripts": {
-    "build": "npm run build:types",
-    "build:types": "tsc -p tsconfig.decl.json",
-    "prepublishOnly": "npm run build",
-    "test": "npm run test:lint && npm run test:types",
-    "test:lint": "eslint index.js",
-    "test:types": "tsc"
-  },
-  "files": [
-    "index.d.ts",
-    "index.js"
-  ],
-  "author": {
-    "name": "Andrew Duthie",
-    "email": "andrew@andrewduthie.com",
-    "url": "https://andrewduthie.com"
-  },
-  "license": "MIT",
-  "homepage": "https://github.com/aduth/unistore-browser-sync",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/aduth/unistore-browser-sync.git"
-  },
-  "bugs": {
-    "url": "https://github.com/aduth/unistore-browser-sync/issues"
-  },
-  "devDependencies": {
-    "@aduth/eslint-config": "^4.3.0",
-    "eslint": "^8.2.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-jsdoc": "^37.0.3",
-    "eslint-plugin-prettier": "^4.0.0",
-    "prettier": "^2.4.1",
-    "typescript": "^4.5.0-beta",
-    "unistore": "^3.5.2",
-    "web-ext-types": "^3.2.1"
-  }
+	"name": "unistore-browser-sync",
+	"type": "module",
+	"version": "1.0.0",
+	"description": "Extend a Unistore store to replicate state for your browser extension using browser.runtime.Port",
+	"main": "index.js",
+	"module": "index.js",
+	"sideEffects": false,
+	"keywords": [
+		"unistore",
+		"sync",
+		"browser",
+		"extension"
+	],
+	"scripts": {
+		"build": "npm run build:types",
+		"build:types": "tsc -p tsconfig.decl.json",
+		"prepublishOnly": "npm run build",
+		"test": "npm run test:lint && npm run test:types",
+		"test:lint": "eslint index.js",
+		"test:types": "tsc"
+	},
+	"files": [
+		"index.d.ts",
+		"index.js"
+	],
+	"author": {
+		"name": "Andrew Duthie",
+		"email": "andrew@andrewduthie.com",
+		"url": "https://andrewduthie.com"
+	},
+	"license": "MIT",
+	"homepage": "https://github.com/aduth/unistore-browser-sync",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/aduth/unistore-browser-sync.git"
+	},
+	"bugs": {
+		"url": "https://github.com/aduth/unistore-browser-sync/issues"
+	},
+	"devDependencies": {
+		"@aduth/eslint-config": "^4.3.0",
+		"eslint": "^8.2.0",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-jsdoc": "^37.0.3",
+		"eslint-plugin-prettier": "^4.0.0",
+		"prettier": "^2.4.1",
+		"typescript": "^4.5.0-beta",
+		"unistore": "^3.5.2",
+		"web-ext-types": "^3.2.1"
+	}
 }
