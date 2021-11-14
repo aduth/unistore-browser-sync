@@ -55,8 +55,12 @@
  *
  * @property {Dispatch} dispatch Dispatch an action, applying the object result
  *                               as a patch on the current store state.
+ */
+
+/**
+ * @typedef {import('unistore').Store<State> & SyncStoreType} SyncStore
  *
- * @typedef {import('unistore').Store & SyncStoreType} SyncStore
+ * @template [State=any]
  */
 
 /**
@@ -69,10 +73,12 @@ const PORT_NAME = 'sync';
 /**
  * Enhances a store to dispatch actions using a specified dispatch handler.
  *
+ * @template [State=any]
+ *
  * @param {import('unistore').Store} store      Store to enhance.
  * @param {Dispatcher}               dispatcher Dispatch handler.
  *
- * @return {SyncStore} Enhanced store.
+ * @return {SyncStore<State>} Enhanced store.
  */
 function withDispatch(store, dispatcher) {
 	return {
@@ -110,10 +116,12 @@ function ifMessageType(type, handler) {
  * replica stores or the primary store itself. An object returned by a
  * dispatched action applies as a patch on the current store state.
  *
+ * @template [State=any]
+ *
  * @param {import('unistore').Store}     store   Store to enhance.
  * @param {import('unistore').ActionMap} actions Action map.
  *
- * @return {SyncStore} Primary store.
+ * @return {SyncStore<State>} Primary store.
  */
 export function primary(store, actions = {}) {
 	/**
@@ -182,9 +190,11 @@ export function primary(store, actions = {}) {
  * resolving to the enhanced store. The promise resolves once its initial state
  * has been set from the primary store.
  *
+ * @template [State=any]
+ *
  * @param {import('unistore').Store} store Store to enhance.
  *
- * @return {Promise<SyncStore>} Promise resolving to replica store.
+ * @return {Promise<SyncStore<State>>} Promise resolving to replica store.
  */
 export function replica(store) {
 	return new Promise((resolve) => {
@@ -193,7 +203,7 @@ export function replica(store) {
 		/** @type {Dispatcher} */
 		const dispatcher = (message) => port.postMessage(message);
 
-		/** @type {SyncStore} */
+		/** @type {SyncStore<State>} */
 		const replicaStore = withDispatch(store, dispatcher);
 
 		/**
