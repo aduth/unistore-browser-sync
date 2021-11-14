@@ -5,5 +5,10 @@
 	},
 	"globals": {
 		"browser": true
+	},
+	"settings": {
+		"jsdoc": {
+			"mode": "typescript"
+		}
 	}
 }
