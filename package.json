@@ -1,7 +1,7 @@
 {
 	"name": "unistore-browser-sync",
 	"type": "module",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "Extend a Unistore store to replicate state for your browser extension using browser.runtime.Port",
 	"main": "index.js",
 	"module": "index.js",
